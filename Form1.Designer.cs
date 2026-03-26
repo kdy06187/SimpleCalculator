@@ -31,7 +31,7 @@ namespace SimpleCalculator
             lbl_Title = new Label();
             txt_Input = new TextBox();
             txt_Result = new TextBox();
-            btn_CE = new Button();
+            btn_ClearEntry = new Button();
             btn_Clear = new Button();
             btn_Delete = new Button();
             btn_Divide = new Button();
@@ -66,27 +66,30 @@ namespace SimpleCalculator
             // 
             // txt_Input
             // 
+            txt_Input.Font = new Font("맑은 고딕", 12F);
             txt_Input.Location = new Point(117, 122);
             txt_Input.Name = "txt_Input";
-            txt_Input.Size = new Size(422, 39);
+            txt_Input.Size = new Size(422, 50);
             txt_Input.TabIndex = 1;
             // 
             // txt_Result
             // 
+            txt_Result.Font = new Font("맑은 고딕", 12F);
             txt_Result.Location = new Point(117, 188);
             txt_Result.Name = "txt_Result";
-            txt_Result.Size = new Size(422, 39);
+            txt_Result.Size = new Size(422, 50);
             txt_Result.TabIndex = 2;
             // 
-            // btn_CE
+            // btn_ClearEntry
             // 
-            btn_CE.Font = new Font("맑은 고딕", 15F);
-            btn_CE.Location = new Point(117, 264);
-            btn_CE.Name = "btn_CE";
-            btn_CE.Size = new Size(101, 75);
-            btn_CE.TabIndex = 3;
-            btn_CE.Text = "CE";
-            btn_CE.UseVisualStyleBackColor = true;
+            btn_ClearEntry.Font = new Font("맑은 고딕", 15F);
+            btn_ClearEntry.Location = new Point(117, 264);
+            btn_ClearEntry.Name = "btn_ClearEntry";
+            btn_ClearEntry.Size = new Size(101, 75);
+            btn_ClearEntry.TabIndex = 3;
+            btn_ClearEntry.Text = "CE";
+            btn_ClearEntry.UseVisualStyleBackColor = true;
+            btn_ClearEntry.Click += btn_ClearEntry_Click;
             // 
             // btn_Clear
             // 
@@ -97,6 +100,7 @@ namespace SimpleCalculator
             btn_Clear.TabIndex = 3;
             btn_Clear.Text = "C";
             btn_Clear.UseVisualStyleBackColor = true;
+            btn_Clear.Click += btn_Clear_Click;
             // 
             // btn_Delete
             // 
@@ -107,6 +111,7 @@ namespace SimpleCalculator
             btn_Delete.TabIndex = 3;
             btn_Delete.Text = "del";
             btn_Delete.UseVisualStyleBackColor = true;
+            btn_Delete.Click += btn_Delete_Click;
             // 
             // btn_Divide
             // 
@@ -116,7 +121,7 @@ namespace SimpleCalculator
             btn_Divide.Name = "btn_Divide";
             btn_Divide.Size = new Size(101, 75);
             btn_Divide.TabIndex = 3;
-            btn_Divide.Text = "%";
+            btn_Divide.Text = "÷";
             btn_Divide.UseVisualStyleBackColor = true;
             btn_Divide.Click += btn_Operator_Click;
             // 
@@ -321,7 +326,7 @@ namespace SimpleCalculator
             Controls.Add(btn_Delete);
             Controls.Add(btn_7);
             Controls.Add(btn_Clear);
-            Controls.Add(btn_CE);
+            Controls.Add(btn_ClearEntry);
             Controls.Add(txt_Result);
             Controls.Add(txt_Input);
             Controls.Add(lbl_Title);
@@ -336,7 +341,7 @@ namespace SimpleCalculator
         private Label lbl_Title;
         private TextBox txt_Input;
         private TextBox txt_Result;
-        private Button btn_CE;
+        private Button btn_ClearEntry;
         private Button btn_Clear;
         private Button btn_Delete;
         private Button btn_Divide;
