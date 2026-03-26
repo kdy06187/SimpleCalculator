@@ -68,6 +68,17 @@ namespace SimpleCalculator
                 case "-":
                     result = operand1 - operand2;
                     break;
+                case "X":
+                    result = operand1 * operand2;
+                    break;
+                case "%":
+                    if (operand2 != 0) result = operand1 / operand2;
+                    else
+                    {
+                        MessageBox.Show("0으로 나눌 수 없습니다.");
+                        return;
+                    }
+                    break;
                 default:
                     MessageBox.Show("유효한 연산자가 아닙니다.");
                     return;
