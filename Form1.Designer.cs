@@ -51,6 +51,8 @@ namespace SimpleCalculator
             btn_0 = new Button();
             btn_Decimal = new Button();
             btn_Equals = new Button();
+            btn_OpenParen = new Button();
+            btn_CloseParen = new Button();
             SuspendLayout();
             // 
             // lbl_Title
@@ -69,7 +71,7 @@ namespace SimpleCalculator
             txt_Input.Font = new Font("맑은 고딕", 12F);
             txt_Input.Location = new Point(117, 122);
             txt_Input.Name = "txt_Input";
-            txt_Input.Size = new Size(422, 50);
+            txt_Input.Size = new Size(529, 50);
             txt_Input.TabIndex = 1;
             // 
             // txt_Result
@@ -77,7 +79,7 @@ namespace SimpleCalculator
             txt_Result.Font = new Font("맑은 고딕", 12F);
             txt_Result.Location = new Point(117, 188);
             txt_Result.Name = "txt_Result";
-            txt_Result.Size = new Size(422, 50);
+            txt_Result.Size = new Size(529, 50);
             txt_Result.TabIndex = 2;
             // 
             // btn_ClearEntry
@@ -302,11 +304,35 @@ namespace SimpleCalculator
             btn_Equals.UseVisualStyleBackColor = true;
             btn_Equals.Click += btn_Result_Click;
             // 
+            // btn_OpenParen
+            // 
+            btn_OpenParen.Font = new Font("맑은 고딕", 15F);
+            btn_OpenParen.Location = new Point(545, 264);
+            btn_OpenParen.Name = "btn_OpenParen";
+            btn_OpenParen.Size = new Size(101, 75);
+            btn_OpenParen.TabIndex = 3;
+            btn_OpenParen.Text = "(";
+            btn_OpenParen.UseVisualStyleBackColor = true;
+            btn_OpenParen.Click += btn_Operand_Click;
+            // 
+            // btn_CloseParen
+            // 
+            btn_CloseParen.Font = new Font("맑은 고딕", 15F);
+            btn_CloseParen.Location = new Point(545, 355);
+            btn_CloseParen.Name = "btn_CloseParen";
+            btn_CloseParen.Size = new Size(101, 75);
+            btn_CloseParen.TabIndex = 3;
+            btn_CloseParen.Text = ")";
+            btn_CloseParen.UseVisualStyleBackColor = true;
+            btn_CloseParen.Click += btn_Operand_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(14F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(676, 759);
+            Controls.Add(btn_OpenParen);
+            Controls.Add(btn_CloseParen);
             Controls.Add(btn_Equals);
             Controls.Add(btn_Decimal);
             Controls.Add(btn_Add);
@@ -361,5 +387,7 @@ namespace SimpleCalculator
         private Button btn_0;
         private Button btn_Decimal;
         private Button btn_Equals;
+        private Button btn_OpenParen;
+        private Button btn_CloseParen;
     }
 }

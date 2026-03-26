@@ -1,0 +1,199 @@
+namespace SimpleCalculator
+{
+    public partial class Form1 : Form
+    {
+        TextBox txtInput, txtResult;
+
+        String operand1 = "", operand2 = "";
+        String currentOperator = null;
+        bool isCalculated = false; // 계산 완료 상태 플래그
+
+        public Form1()
+        {
+            InitializeComponent();
+            // 텍스트박스 참조 저장
+            txtInput = txt_Input;
+            txtResult = txt_Result;
+        }
+
+        // 숫자 버튼 클릭 시 텍스트박스에 숫자 추가
+        private void btn_Operand_Click(object sender, EventArgs e)
+        {
+            // 클릭한 버튼 객체
+            Button button = sender as Button;
+            // 버튼이 null이 아닌 경우에만 텍스트 추가
+            if (button != null)
+            {
+                // 이전 계산이 막 끝난 상태라면 초기화하고 새 숫자 입력
+                if (isCalculated)
+                {
+                    operand1 = "";
+                    operand2 = "";
+                    currentOperator = null;
+                    txtInput.Text = "";
+                    txtResult.Text = "";
+                    isCalculated = false;
+                }
+
+                // 버튼의 텍스트를 텍스트박스에 추가
+                txtInput.Text += button.Text;
+
+                // 현재 연산자가 없는 경우 첫 번째 피연산자, 있는 경우 두 번째 피연산자로 저장
+                if (currentOperator == null)
+                {
+                    operand1 += button.Text;
+                    txtResult.Text = operand1;
+                }
+                else
+                {
+                    operand2 += button.Text;
+                    txtResult.Text = operand2;
+                }
+
+            }
+        }
+
+        // 연산자 버튼 클릭 시 현재 연산자 저장
+        private void btn_Operator_Click(object sender, EventArgs e)
+        {
+            // 방금 계산된 상태에서 연산자를 누르면, 그 결과를 첫 번째 피연산자로 유지하고 계산 진행
+            if (isCalculated)
+            {
+                isCalculated = false; 
+            }
+
+            // 클릭한 버튼 객체
+            Button button = sender as Button;
+            if (button != null && !string.IsNullOrEmpty(operand1)) // 첫 피연산자가 입력되었을 때만 작동
+            {
+                // 이미 두 번째 피연산자까지 입력된 상태에서 연산자를 또 누르면 자동 계산(연속 계산)
+                if (!string.IsNullOrEmpty(operand2))
+                {
+                    btn_Result_Click(sender, e);
+                    isCalculated = false;
+                }
+
+                // 잘못 눌러서 연산자를 바꿀 때 기존 기호를 텍스트박스에서 지움
+                if (currentOperator != null && string.IsNullOrEmpty(operand2))
+                {
+                    txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - currentOperator.Length);
+                }
+
+                currentOperator = button.Text;
+                txtInput.Text += button.Text;
+            }
+        }
+        // 결과 버튼 클릭 시 연산 수행
+        private void btn_Result_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(operand1) || string.IsNullOrEmpty(operand2) || currentOperator == null) return;
+
+            // int 오류를 방지하기 위해 double 형태로 파싱
+            double n1 = 0, n2 = 0;
+            if (!double.TryParse(operand1, out n1) || !double.TryParse(operand2, out n2)) return;
+
+            double result = 0;
+            // 현재 연산자에 따라 연산 수행
+            switch (currentOperator)
+            {
+                case "+": result = n1 + n2; break;
+                case "-": result = n1 - n2; break;
+                case "X": result = n1 * n2; break;
+                case "÷":
+                    if (n2 != 0) result = n1 / n2;
+                    else
+                    {
+                        MessageBox.Show("0으로 나눌 수 없습니다.");
+                        return;
+                    }
+                    break;
+                default:
+                    MessageBox.Show("유효한 연산자가 아닙니다.");
+                    return;
+            }
+
+            // 등호(=) 버튼으로 호출된 경우에만 UI에 표시
+            Button button = sender as Button;
+            if (button != null && button.Text == "=")
+            {
+                txtInput.Text += "=";
+            }
+
+            // 결과를 텍스트박스에 표시
+            txtResult.Text = result.ToString();
+
+            // 다음 계산을 이어할 수 있도록 변수 업데이트
+            operand1 = result.ToString();
+            operand2 = "";
+            currentOperator = null;
+            isCalculated = true; // 방금 계산이 끝났음을 마킹
+        }
+
+        // 초기화 버튼 클릭 시 모든 변수와 텍스트박스 초기화
+        private void btn_Clear_Click(object sender, EventArgs e)
+        {
+            // 모든 변수 초기화
+            operand1 = "";
+            operand2 = "";
+            currentOperator = null;
+            isCalculated = false;
+            // 텍스트박스 초기화
+            txtInput.Text = "";
+            txtResult.Text = "";
+        }
+
+        //CE버튼 클릭 시 마지막 피연산자 제거
+        private void btn_ClearEntry_Click(object sender, EventArgs e)
+        {
+            if (isCalculated) 
+            {
+                btn_Clear_Click(null, null); // 계산 직후 CE는 전체 리셋
+                return;
+            }
+
+            // 예외 방지: 문자열 길이를 검사 후 지우기
+            if (currentOperator == null && !string.IsNullOrEmpty(operand1))
+            {
+                txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - operand1.Length);
+                txtResult.Text = "0";
+                operand1 = "";
+            }
+            else if (currentOperator != null && !string.IsNullOrEmpty(operand2))
+            {
+                txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - operand2.Length);
+                txtResult.Text = "0";
+                operand2 = "";
+            }
+        }
+
+        //Delete 버튼 클릭 시 마지막 입력 제거
+        private void btn_Delete_Click(object sender, EventArgs e)
+        {
+            if (isCalculated) return; // 이미 계산된 결과는 부분 삭제 불가
+
+            if (txtInput.Text.Length > 0)
+            {
+                // 현재 연산자가 없는 경우 첫 번째 피연산자에서 제거
+                if (currentOperator == null && !string.IsNullOrEmpty(operand1))
+                {
+                    operand1 = operand1.Substring(0, operand1.Length - 1);
+                    txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - 1);
+                    txtResult.Text = operand1 == "" ? "0" : operand1;
+                }
+                // 두 번째 피연산자에서 문자 제거
+                else if (currentOperator != null && !string.IsNullOrEmpty(operand2))
+                {
+                    operand2 = operand2.Substring(0, operand2.Length - 1);
+                    txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - 1);
+                    txtResult.Text = operand2 == "" ? "0" : operand2;
+                }
+                // 연산자 자체를 지우는 경우
+                else if (currentOperator != null && string.IsNullOrEmpty(operand2))
+                {
+                    currentOperator = null;
+                    txtInput.Text = txtInput.Text.Substring(0, txtInput.Text.Length - 1);
+                }
+            }
+        }
+    }
+}
